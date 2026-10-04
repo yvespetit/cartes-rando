@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#1f4e78"><link rel="icon" href="icone-192.png"><link rel="apple-touch-icon" href="icone-192.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Randos et trails"><meta name="author" content="Yves PETIT">
-<title>Carte rando — V19 — 2026-10-04</title>
+<title>Carte rando — V21 — 2026-10-04</title>
 <style id="leafletcss">/* required styles */
 
 .leaflet-pane,
@@ -844,13 +844,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
   #modal textarea, #modal select { width: 100%; font: 12.5px Arial; padding: 6px; border: 1px solid #cbd2d9; border-radius: 5px; margin: 3px 0 8px; }
   .toast { position: fixed; left: 50%; transform: translateX(-50%); top: 12px; z-index: 5000; background: #1f2933; color: #fff; padding: 7px 12px; border-radius: 6px; font-size: 12px; }
   .leaflet-tooltip { font: 12px Arial, sans-serif; }
-  @media (max-width: 800px) {
+  @media (max-width: 800px), (max-height: 520px) {
     #side { position: absolute; z-index: 1500; left: 0; top: 0; bottom: 0; width: 100%; min-width: 0; box-shadow: 0 0 20px rgba(0,0,0,.3); }
     #side.hide { margin-left: -100%; } #side .top h1 { padding-right: 70px; }
     #sideClose { display: block !important; }
     #bot { height: 230px; } .one { flex-direction: column; } .one .info { width: 100%; max-height: 50%; border-right: 0; border-bottom: 1px solid var(--line); }
     #botB { overflow-x: auto; } .band { min-width: 260px; } #leg { display: none; } #mapBtns button { font-size: 15px; width: 38px; height: 34px; text-align: center; padding: 0; } #mapBtns .bt { display: none; } }
   #sideClose { display: none; position: absolute; right: 8px; top: 8px; z-index: 2; }
+  @media (max-height: 520px) { #bot { height: 150px; } .one { flex-direction: row !important; } .one .info { width: 48% !important; max-height: none !important; border-bottom: 0 !important; border-right: 1px solid var(--line) !important; } }
 </style>
 </head>
 <body>
@@ -858,7 +859,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 <aside id="side"><button class="btn" id="sideClose">◀ Carte</button>
   <div class="top">
     <h1>Itinéraires de randos et de trails <button class="hbtn" id="bHelp" title="Aide et hypothèses">?</button><button class="hbtn" id="bReport" title="Signaler un problème">!</button></h1>
-    <div class="sub">V19 du 2026-10-04 · données OpenStreetMap du 2026-09-29</div>
+    <div class="sub">V21 du 2026-10-04 · données OpenStreetMap du 2026-09-29</div>
     <div class="lab">Affichage</div>
     <div class="seg" id="segMode"><button data-m="rando" class="on">Randos</button><button data-m="trail">Trails</button><button data-m="all">Tout</button></div>
     <label class="tgl"><input type="checkbox" id="multi"><span>Comparer jusqu'à <b>3 itinéraires</b> (affichés en entier, couleurs différentes)</span></label>
@@ -3239,9 +3240,9 @@ var qrcode = function() {
     return qrcode;
 }));
 </script>
-<script src="donnees/base.js"></script>
+<script src="base_1.js"></script><script src="base_2.js"></script><script src="base_3.js"></script><script src="base_4.js"></script><script src="base_5.js"></script><script>if(!window.D || !D.MAIN.length) document.addEventListener("DOMContentLoaded",()=>document.body.insertAdjacentHTML("afterbegin","<div style=\"position:fixed;inset:0;z-index:9999;background:#fff;padding:24px;font:16px Arial\"><b>Données de la carte introuvables</b> (un fichier base_….js manque).<br><br>Déposer TOUS les fichiers du dossier « Version en ligne » à la racine du dépôt GitHub.</div>"));</script>
 <script>
-const VERSION='V19', GEN_DATE='2026-10-04';
+const VERSION='V21', GEN_DATE='2026-10-04';
 const CATS=[{n:'Européen / transfrontalier',c:'#7b3fa0',w:5},{n:'GR / national',c:'#d6282b',w:5},{n:'GRP / régional',c:'#e39a00',w:5},{n:'PR / local',c:'#1f6fb2',w:5}];
 const MAIN=D.MAIN, GI=D.GI, PRT=D.PRT, PN=D.PN, CAND=D.CAND, PRG=D.PRG||null, ONLINE_URL=D.URL||'';
 const PR_MINZOOM=11;
@@ -3550,7 +3551,7 @@ const prLoaded=new Map(); const prPending=new Set(); let prT=null;
 window.PRLOAD=function(obj){ for(const k in obj){ prLoaded.set(k, obj[k].map(a=>{ const r=R(a); r.pr=true; byId.set(r.id,r); return r; })); } clearTimeout(prT); prT=setTimeout(()=>{ refresh(); if(pendingSel) tryPending(); },50); };
 function loadTile(k){ if(prLoaded.has(k)) return prLoaded.get(k); const el=document.getElementById('pr_'+k);
   if(el){ const arr=JSON.parse(el.textContent).map(a=>{ const r=R(a); r.pr=true; byId.set(r.id,r); return r; }); prLoaded.set(k,arr); return arr; }
-  if(PRG && PRG[k] && !prPending.has(PRG[k])){ prPending.add(PRG[k]); const s=document.createElement('script'); s.src='donnees/'+PRG[k]+'.js'; document.head.appendChild(s); }
+  if(PRG && PRG[k] && !prPending.has(PRG[k])){ prPending.add(PRG[k]); const s=document.createElement('script'); s.src=PRG[k]+'.js'; document.head.appendChild(s); }
   return []; }
 
 // ---------- trails (projet « Trails de France ») : courses avec / sans tracé, parcours permanents
@@ -3569,7 +3570,7 @@ function initTrails(rows){ TRS=rows.map(TRo); TRS.forEach(o=>trById.set(o.id,o))
   $('tDisc').innerHTML='<option value="">Toutes</option>'+ds.map(d=>`<option>${esc(d)}</option>`).join(''); refresh(); if(pendingTr) tryPendingTr(); }
 window.TRLOAD=function(rows){ initTrails(rows); };
 let trailsWanted=false;
-function ensureTrails(){ if(TRS.length || trailsWanted) return; trailsWanted=true; if(D.TR){ initTrails(D.TR); return; } if(D.TRF){ const s=document.createElement('script'); s.src='donnees/trails.js'; document.head.appendChild(s); } }
+function ensureTrails(){ if(TRS.length || trailsWanted) return; trailsWanted=true; if(D.TR){ initTrails(D.TR); return; } if(D.TRF){ for(let i=1;i<=D.TRF;i++){ const s=document.createElement('script'); s.src='trails_'+i+'.js'; s.async=false; document.head.appendChild(s); } } }   // morceaux chargés dans l'ordre
 function passTrail(o){
   if(mode==='rando') return false;
   if(o.ttype==='P' && !$('tP').checked) return false; if(o.ttype==='C' && o.hasT && !$('tC').checked) return false; if(o.ttype==='C' && !o.hasT && !$('tN').checked) return false;
@@ -4123,7 +4124,7 @@ $('gpxIn').onchange=ev=>{ const f=ev.target.files[0]; if(!f) return; const rd=ne
   UPL.push(u); clickRoute({kind:'u', u:UPL.length-1}); toast('GPX importé : il reste dans votre navigateur (rien n\'est envoyé).'); }; rd.readAsText(f); ev.target.value=''; };
 function sideToggle(show){ const sd=$('side'); if(show===undefined) show=sd.classList.contains('hide'); sd.classList.toggle('hide',!show); $('tog').textContent=show?'◀ Panneau':'▶ Filtres et liste'; setTimeout(()=>{ map.invalidateSize(); renderBottom(); },250); }
 $('tog').onclick=()=>sideToggle(); $('sideClose').onclick=()=>sideToggle(false);
-if(window.innerWidth<800) sideToggle(false);
+if(window.innerWidth<800 || window.innerHeight<520) sideToggle(false);
 
 // ---------- liens profonds (QR code) et démarrage
 let pendingSel=null, pendingRot=0;
